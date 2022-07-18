@@ -4,7 +4,7 @@ desc dual
 select * from dual; --필드 하나로 구성된 레코드 하나 들어있는 테이블 받은거.
 
 select lower('SQL Course')
-from dual;
+from dual; --더미테이블
 
 select upper('SQL Course')
 from dual;

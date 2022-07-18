@@ -9,27 +9,29 @@ from employees;
 select max(salary) - min(salary)
 from employees;
 
-select count(*) --많이 쓴다. 그룹 안의 레코드 개수 리턴.
+select count(*)
 from employees;
+
 
 -- 과제] 70번 부서원이 몇명인 지 조회하라.
 select count(*)
 from employees
 where department_id = 70;
 
-select count(employee_id) --em_id는 프라이머리키. 널없다.
+select count(employee_id)
 from employees;
 
-select count(manager_id) --파라미터 value가 null이면 무시.
+select count(manager_id)
 from employees;
 
-select avg(commission_pct) --영업직들만 평균. 널인애들 무시.
+select avg(commission_pct)
 from employees;
+
 
 -- 과제] 조직의 평균 커미션율을 조회하라.
 select avg(nvl(commission_pct, 0))
 from employees;
-------------------
+-----------------
 
 select avg(salary)
 from employees;
@@ -47,9 +49,9 @@ from employees;
 -- 과제] 매니저 수를 조회하라.
 select count(distinct manager_id)
 from employees;
------------------------
+------------------
 
-select department_id, count(employee_id) --count에 파라미터 프라
+select department_id, count(employee_id)
 from employees
 group by department_id
 order by department_id;
@@ -60,20 +62,20 @@ where department_id = 30;
 
 select department_id, job_id, count(employee_id)
 from employees
-group by department_id --groub by 절에 있는 것만 select에 쓸 수 있다.
-order by department_id; -- error
+group by department_id
+order by department_id; --error
 
 -- 과제] 직업별 사원수를 조회하라.
-select job_id, count(employee_id) --job_id가 레이블
+select job_id, count(employee_id)
 from employees
 group by job_id
 order by job_id;
----------------------
+----------------
 
-select department_id, max(salary) --그룹 만들고 나서 그룹 골라냄. 
+select department_id, max(salary)
 from employees
 group by department_id
-having department_id > 50; --having 으로 그룹 골라내기 가능
+having department_id > 50;
 
 select department_id, max(salary)
 from employees
@@ -83,17 +85,17 @@ having max(salary) > 10000;
 select department_id, max(salary) max_sal
 from employees
 group by department_id
-having max_sal > 10000; -- error. having에서는 별명 못쓴다.
+having max_sal > 10000; --error
 
-select department_id, max(salary) --레코드 먼저 골라내고 골라진 레코드로 그룹 만들기
+select department_id, max(salary)
 from employees
-where department_id > 50 --where가 group by보다먼저 나와야함.
+where department_id > 50
 group by department_id;
 
 select department_id, max(salary)
 from employees
 where max(salary) > 10000
-group by department_id; -- error 조건문에 그룹펑션있으면 having 쓴다. having은 그룹을 골라낸다.
+group by department_id; --error
 
 select job_id, sum(salary) payroll
 from employees
@@ -115,11 +117,11 @@ select max(avg(salary))
 from employees
 group by department_id;
 
-select sum(max(avg(salary))) --그룹함수는 2개까지만 중첩가능.
-from employees 
-group by department_id; --error, to deeply
+select sum(max(avg(salary)))
+from employees
+group by department_id; --error
 
-select department_id, round(avg(Salary))
+select department_id, round(avg(salary))
 from employees
 group by department_id;
 
@@ -129,11 +131,6 @@ select sum(decode(to_char(hire_date, 'yyyy'), '2001', 1, 0)) "2001",
     sum(decode(to_char(hire_date, 'yyyy'), '2003', 1, 0)) "2003"
 from employees;
 
-select count(case when hire_date like '2001%' then 1 else null end) "2001",
-    count(case when hire_date like '2002%' then 1 else null end) "2002",
-    count(case when hire_date like '2003%' then 1 else null end) "2003"
-from employees;
-
 -- 과제] 직업별, 부서별 월급합을 조회하라.
 --      부서는 20, 50, 80 이다.
 select job_id, sum(decode(department_id, 20, salary)) "20",
@@ -141,4 +138,3 @@ select job_id, sum(decode(department_id, 20, salary)) "20",
     sum(decode(department_id, 80, salary)) "80"
 from employees
 group by job_id;
-
