@@ -15,7 +15,7 @@ where last_name = 'Whalen';
 
 select employee_id, last_name, hire_date
 from employees
-where hire_date = '2008/02/06';
+where hire_date = '2008/02/06'; --문자가 날짜로 형변환.
 
 select last_name, salary
 from employees

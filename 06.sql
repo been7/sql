@@ -121,7 +121,13 @@ select last_name emp, last_name mgr
 from employees worker join employees manager 
 on worker.manager_id = manager.employee_id; -- error
 
--- 과제] 같은 부서에서 일하는 사원들의 이름, 부서번호, 동료의 이름을 조회하라.
-select worker.last_name, department.department_id, coworker.last_name
-from employees worker join employees coworker
-on worker.last_name = coworker.last_name;
+-- 과제] 같은 부서에서 일하는 사원들의 부서번호, 이름, 동료의 이름을 조회하라.
+select e.department_id, e.last_name employee, c.last_name colleague
+from employees e join employees c
+on e.department_id = c.department_id
+and e.employee_id <> c.employee_id
+order by 1, 2, 3;
+
+-- 과제] Davies 보다 후에 입사한 사원들의 이름, 입사일을 조회하라.
+select e.last_name name, e.hire_date hd
+from employees e join employees e
