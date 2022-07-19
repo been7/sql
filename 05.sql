@@ -123,7 +123,7 @@ select department_id, round(avg(Salary))
 from employees
 group by department_id;
 
--- 과제] 2001년, 2002년, 2003년도별 입사자 수를 찾는다. 자주 쓴다.
+-- ★과제] 2001년, 2002년, 2003년도별 입사자 수를 찾는다. 자주 쓴다.
 select sum(decode(to_char(hire_date, 'yyyy'), '2001', 1, 0)) "2001",
     sum(decode(to_char(hire_date, 'yyyy'), '2002', 1, 0)) "2002",
     sum(decode(to_char(hire_date, 'yyyy'), '2003', 1, 0)) "2003"
