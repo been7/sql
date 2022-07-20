@@ -1,62 +1,65 @@
--- select
+-- view
+drop view empvu80;
 
-select * from departments;
+create view empvu80 as
+    select employee_id, last_name, department_id
+    from employees
+    where department_id = 80;
 
-select department_id, location_id
-from departments;
+desc empvu80 --select절의 칼럼이 뷰의 구조가 됨.
 
-select location_id, department_id
-from departments;
+select * from empvu80;
 
-desc departments --리스판스로 테이블구조 받기.
+select * from ( --뷰 없었으면 이렇게 써야됨.
+    select employee_id, last_name, department_id
+    from employees
+    where department_id = 80);
+    
+create or replace view empvu80 as
+    select employee_id, job_id
+    from employees
+    where department_id = 80;
 
--- 과제] employees 구조를 확인하라.
+desc empvu80
+-------------
 
-desc employees
+drop table teams;
+drop view team50;
 
-select last_name, salary, salary + 300
-from employees;
--- 과제] 사원들의 월급, 연봉을 조회하라.
-select salary, salary * 12
-from employees;
+create table teams as
+    select department_id team_id, department_name team_name
+    from departments;
+    
+create view team50 as
+    select *
+    from teams
+    where team_id = 50;
 
-select last_name, salary, 12 * salary + 100
-from employees;
-select last_name, salary, 12 * (salary + 100)
-from employees;
+select * from team50;
 
-select last_name, job_id, commission_pct
-from employees;
-select last_name, job_id, 12 * salary + (12 * salary * commission_pct)
-from employees; --피연산자 중 하나라도 널이면 결과는 널.
+select count(*) from teams; --27개
+insert into team50 --뷰에 인서트한걸로 썼지만,.아니다
+values(300, 'Marketing');
+select count(*) from teams; -- 28개. 실제로는 베이스테이블에 인서트?
 
-select last_name as name, commission_pct as comm
-from employees;
-select last_name "Name", salary * 12 "Annual Salary"
-from employees;
--- 과제] 사원들의 사번, 이름, 직업, 입사일(STARTDATE)을 조회하라.
-select employee_id, last_name, job_id, hire_date startdate
-from employees;
--- 과제] 사원들의 사번(Emp #), 이름(Name), 직업(Job), 입사일(Hire Date)을 조회하라.
-select employee_id "Emp #", last_name "Name", job_id "Job", hire_date "Hire Date"
-from employees;
+create or replace view team50 as
+    select *
+    from teams
+    where team_id = 50
+    with check option; --제약조건.뷰에 붙일 수 있다.
 
-select last_name || job_id -- 붙이기 연산자 ||
-from employees;
-select last_name || ' is ' || job_id --'상수포함'
-from employees;
-select last_name || ' is ' || job_id employee
-from employees;
-select last_name || null --붙이기는 널이어도 널안나옴.
-from employees;
-select last_name || commission_pct
-from employees; --문자랑 문자랑 붙은거.
-select last_name || salary
-from employees; --뒤에 숫자아니고 문자
-select last_name || hire_date
-from employees; --문자 + 문자로 자동변환
-select last_name || (salary * 12)
-from employees;
--- 과제] 사원들의 '이름, 직업'(Emp & Title)을 조회하라.
-select last_name || ', ' || job_id "Emp and Title"
-from employees;
+insert into team50 values(50, 'IT Support'); --베이스테이블 teams에 인서트
+select count(*) from teams; --29개.
+insert into team50 values(301, 'IT Support'); --error, view WITH CHECK OPTION where-clause violation.팀id가 50이 아니라서.
+
+create or replace view empvu10(employee_num, employee_name, job_title) as
+    select employee_id, last_name, job_id
+    from employees
+    where department_id = 10
+    with read only; --뷰도 읽기전용으로 만들 ㅅ 있다.
+
+insert into empvu10 values(501, 'abel', 'Sales'); --error. cannot perform a DML
+----------- view 는 쿼리의 별명.
+
+drop sequence 
+

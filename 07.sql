@@ -152,7 +152,7 @@ where employee_id in(select manager_id
                         
 select last_name
 from employees --in은 하나라도 일치, not in은 하나도 안일치.
-where employee_id not in(select manager_id
+where employee_id not in(select manager_id --다 true여도 하나가 null이면 전부,,버려짐
                         from employees);
                         
 -- 과제] 위 문장을 all 연산자로 refactoring 하라.
@@ -167,7 +167,7 @@ from departments;
 
 select count(*) --사원 있는 부서
 from departments d
-where exists (select *
+where exists (select * --메인쿼리 테이블이 서브쿼리에 등장해야함.
                 from employees e
                 where e.department_id = d.department_id);
                 

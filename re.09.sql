@@ -1,4 +1,4 @@
--- DML(Data Manipulation Language) 데이터 조작어
+-- DML(Data Manipulation Language)
 drop table emp;
 drop table dept;
 
@@ -22,16 +22,16 @@ manager_id number(6),
 location_id number(4));
 
 insert into dept(department_id, department_name, manager_id, location_id)
-values (300, 'Public Relation', 100, 1700);
+values(300, 'Public Relation', 100, 1700);
 
 insert into dept(department_id, department_name)
-values (310, 'Purchasing'); --field values 기본값 null
+values (310, 'Purchasing');
 
 -- 과제] row 2건이 insert 성공됐는 지, 확인하라.
 select *
 from dept;
--- insert부터 commit 까지 'transaction'
-commit; --디스크에 저장. 안하면 메모리에만 저장.끄면 사라짐. 
+--transaction
+commit;
 
 insert into emp(employee_id, first_name, last_name,
                 email, phone_number, hire_date,
@@ -69,9 +69,9 @@ insert into sa_reps(id, name, salary, commission_pct)
     from employees
     where job_id like '%REP%';
 commit;
------------------
+---------------
 
-declare --pl/sql
+declare
     base number(6) := 400;
 begin
     for i in 1..10 loop
@@ -87,7 +87,7 @@ select * from sa_reps;
 select *
 from sa_reps
 where id > 400;
-------------------
+-----------------
 
 select employee_id, salary, job_id
 from emp
@@ -112,7 +112,7 @@ select job_id, salary
 from emp
 where employee_id = 300;
 
-rollback; --transaction 취소로 끝.
+rollback;
 
 select job_id, salary
 from emp
@@ -147,7 +147,7 @@ where department_id = (
     select department_id
     from departments
     where department_name = 'Contracting');
-    
+
 select *
 from emp;
 

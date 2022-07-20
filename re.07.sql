@@ -105,3 +105,79 @@ where salary <all (select salary
                     from employees
                     where job_id = 'IT_PROG')
 and job_id <> 'IT_PROG';
+
+-- 과제] 60번 부서의 일부 사원보다 급요가 많은 사원들의 이름을 조회하라.
+select last_name
+from employees
+where salary >any (select salary
+                    from employees
+                    where department_id = 60);
+                    
+-- 과제] 회사 평균 월급보다, 그리고 모든 프로그래머보다 월급을 더 받는
+--      사원들의 이름, 직업, 월급을 조회하라.
+select last_name, job_id, salary
+from employees
+where salary > (select avg(salary)
+                from employees)
+and salary >all (select salary
+                from employees
+                where job_id = 'IT_PROG');
+----------------------
+
+-- no row
+select last_name
+from employees
+where salary = (select salary
+                from employees
+                where employee_id = 1);
+                
+select last_name
+from employees
+where salary in (select salary
+                from employees
+                where job_id = 'IT');
+                
+-- null
+select last_name
+from employees
+where employee_id in(select manager_id
+                        from employees);
+
+select last_name
+from employees
+where employee_id not in(select manager_id
+                        from employees);
+                        
+-- 과제] 위 문장을 all 연산자로 refactoring 하라.
+select last_name
+from employees
+where employee_id <>all (select manager_id
+                        from employees);
+-------------서브쿼리 리턴값 없으면 메인쿼리도 없다. 
+
+select count(*)
+from departments;
+
+select count(*)
+from departments d
+where exists (select *
+                from employees e
+                where e.department_id = d.department_id);
+
+select count(*)
+from departments d
+where not exists (select *
+                from employees e
+                where e.department_id = d.department_id);
+
+-- 과제] 직업을 바꾼 적이 있는 사원들의 사번, 이름, 직업을 조회하라.
+select employee_id, last_name, job_id
+from employees e
+where exists (select *
+                from job_history j
+                where e.employee_id = j.employee_id)
+order by employee_id;
+
+select *
+from job_history
+order by employee_id;
