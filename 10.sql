@@ -1,4 +1,4 @@
--- DDL(Date Definition Language), 자동커밋됨.
+-- DDL(Date Definition Language), 자동커밋됨. 데이터타입정의.
 drop table hire_dates;
 
 create table hire_dates( --칼럼네임.데이터타입
@@ -147,7 +147,7 @@ insert into a values(1);
 insert into b values(31, 1); --부모테이블a의 1 복사해서 넣음
 insert into b values(32, 9); --error, parent key not found
 
-alter table b disable constraint b_aid_fk;
+alter table b disable constraint b_aid_fk; --제약조건비활성화.
 insert into b values(32, 9);
 
 
@@ -168,7 +168,7 @@ desc sub_departments
 select * from sub_departments;
 --------------------
 
-drop table users cascade constraints;
+drop table users cascade constraints; --cas~붙여줘야 다 삭제됨.
 
 create table users(
 user_id number(3));
@@ -196,4 +196,4 @@ insert into users values(2);
 
 commit; --습관적으로 ,,. 하기
 
---이런 명령어가 있었다..정도로 기억하고 필요하면 복사해서 쓰기.
+--10장은 이런 명령어가 있었다..정도로 기억하고 필요하면 복사해서 쓰기.

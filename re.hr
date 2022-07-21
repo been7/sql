@@ -53,3 +53,134 @@ from employees;
 -- 과제] 사원들의 '이름, 직업'(Emp & Title)을 조회하라.
 select last_name || ', ' || job_id "Emp and Title"
 from employees;
+
+select salary, salary * 12
+from employees;
+
+select last_name, salary
+from employees
+where salary >= 12000;
+
+select last_name, hire_date
+from employees
+where to_char(hire_date, '2005/MM/DD');
+
+select last_name
+from employees
+where last_name like '_o%';
+
+select last_name, salary, department_id
+from employees
+where (salary >= 5000 and salary <=12000)
+and department_id in(20, 50);
+
+select last_name, job_id, salary
+from employees
+where job_id like '%SA%' and
+salary not in(2500, 3500);
+
+select initcap(last_name), length(last_name)
+from employees
+where last_name like 'j%' or
+        last_name like 'a%' or
+        last_name like 'm%';
+        
+select last_name, to_char(hire_date, 'YYYY.MM.DD'),
+    to_char(next_day(add_months(hire_date, 3), 2))
+from employees;
+
+select last_name, last_day(hire_date)
+from employees
+where months_between(sysdate, hire_date) > 12 * 20;
+
+select last_name, job_id, salary * 12
+from employees;
+
+select last_name, hire_date, to_char(hire_date, 'fmday') day
+from employees
+order by case day
+        when 'monday' then 1,
+        when 'tuesday' then 2,
+        when 'wednesday' then 3,
+        when 'thursday' then 4,
+        when 'friday' then 5,
+        when 'saturday' then 6,
+        when 'sunday' then 7;
+    end;
+
+select last_name, hire_date,
+    case when hire_date <= to_char('2005/12/31') then '100만원'
+        when hire_date > to_char('2005/12/31') then '10만원'
+from employees;
+
+select avg(nvl(commission_pct, 0)
+from employees;
+
+select count(manager_id)
+from employees;
+
+select manager_id, min(salary)
+from employees;
+
+select e.last_name, e.job_id, e.department_id,
+        d.department_name, l.city
+from employees e join departments d
+on e.department_id = d.department_id
+join locations l
+on d.location_id = l.location_id
+where l.city = 'Toronto';
+
+select w.last_name, w.hire_date, m.last_name, m.hire_date
+from employees w join employees m
+on w.manager_id = m.employee_id
+and w.hire_date < m.hire_date;
+
+select last_name, hire_date
+from employees
+where department_id = (select department_id
+                        from employees
+                        where last_name = 'Abel')
+and last_name <> 'Abel';
+order by last_name;
+
+select manager_id, min(salary)
+from employees
+where manager_id is not null
+group by manager_id
+having min(salary) > 6000;
+
+select count(distinct manager_id)
+from employees;
+
+select avg(nvl(commission_pct, 0))
+from employees;
+
+select last_name, hire_date, to_char(hire_date, 'fmday') day
+from employees
+order by case day
+            when 'monday' then 1
+            when 'tuesday' then 2
+            when 'wednesday' then 3
+            when 'tursday' then 4
+            when 'friday' then 5
+            when 'saturday' then 6
+            when 'sunday' then 7
+        end;
+        
+select last_name, hire_date,
+    case when hire_date <= '2005/12/31' then '100만원'
+        else '10만원' end gift
+from employees
+order by gift, hire_date;
+
+select manager_id, min(salary)
+from employees
+where manager_id is not null
+group by manager_id
+having min(salary) > 6000;
+
+select job_id, sum(decode(department_id, 20, salary)) "20",
+    sum(decode(department_id, 50, salary)) "50",
+    sum(decode(department_id, 80, salary)) "80"
+from employees
+group by job_id;

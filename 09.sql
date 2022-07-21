@@ -152,3 +152,6 @@ select *
 from emp;
 
 commit;
+
+select tname
+from tap;
