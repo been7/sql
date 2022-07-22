@@ -184,3 +184,5 @@ select job_id, sum(decode(department_id, 20, salary)) "20",
     sum(decode(department_id, 80, salary)) "80"
 from employees
 group by job_id;
+
+--이게끝이냐
